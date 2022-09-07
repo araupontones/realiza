@@ -2,6 +2,9 @@ library(shiny)
 library(dplyr)
 library(shinythemes)
 
+
+
+
 ui <- fluidPage(
   
   tags$head(
@@ -14,6 +17,7 @@ ui <- fluidPage(
   uiOutput("last_refreshed"),
   navbarPage("Realiza",
              id = "Paneles",
+<<<<<<< HEAD
              # navbarMenu("Resumo",
              #            tabPanel("Overview",
              #                     ui_overview("overview")
@@ -24,19 +28,35 @@ ui <- fluidPage(
              #            )
              #            
              # ),
+||||||| aac116e
+             navbarMenu("Resumo",
+                        tabPanel("Overview",
+                                 ui_overview("overview")
+                        ),
+                        tabPanel("Presencas",
+                                 ui_summary("summary")
+                                 
+                        )
+                        
+             ),
+=======
+             navbarMenu("Resumo",
+                        tabPanel("Overview",
+                                 ui_overview("overview")
+                        ),
+                        tabPanel("Presencas",
+                                 ui_summary("summary")
+                                 
+                        )
+                      
+                        
+             ),
+             panels_FNM("FNM"),
+>>>>>>> 05666e92e81c499b64daacd3f8621b13889c9fb9
              
-            
+             panels_SGR("SGR"),
              
-            panels_FNM("FNM"),
-             
-            panels_SGR("SGR"),
-             
-            panels_SGR_FNM("FNM + SGR"),
-             
-            panel_powerBI("Feedback"),
-            
-            tabPanel("Admin",
-                     ui_admin("admin")),
+             panels_SGR_FNM("FNM + SGR")
              
          
                        
@@ -49,10 +69,26 @@ ui <- fluidPage(
 
 
 
-
 server <- function(input, output, session) {
   
-last_refreshed <- rio::import("data/2.Dashboard/last_refreshed.rds")
+  
+  sistema <- Sys.info()["sysname"]
+  
+  
+  if(sistema == "Windows"){
+    
+    dir_master <- file.path(dirname(getwd()), "realiza")
+    
+  } else {
+    
+    dir_master <- "/srv/shiny-server/realiza"
+  }
+  
+  
+  dir_data <- file.path(dir_master,"data")
+  
+
+last_refreshed <- rio::import(file.path(dir_data,"2.Dashboard/last_refreshed.rds"))
 
 output$last_refreshed <- renderUI({
   
@@ -62,16 +98,25 @@ output$last_refreshed <- renderUI({
 })
 
   
-#Server grupos  ================================================================
+
+  
+#server summary ================================================================
+serverOverview("overview", dir_data)
+
+serverSummary("summary", dir_data)
+
+
 #Activate the servers of each gropu when the tab is selected
 #For this to work the name id of the uis and values of panel should be consisten
 #See consistency in panels_FNM.R | Panels_SGR.R | Panels_SGR_FNM.R
 activate_tabs_grupos(grupos = c("fnm", "sgr", "sgr_fnm"), 
                      tipos = c("sessoes", "modulos", "cidades"),
                      input,
-                     session
-                     )
+                     session,
+                     dir_data
+)
 
+<<<<<<< HEAD
   
 #server summary ================================================================
 serverOverview("overview") 
@@ -85,52 +130,33 @@ serverSummary("summary")
   #Password admin ===============================================================
 #"Feedback", "sessoes_fnm", "modulos_sgr", "sessoes_sgr_fnm"
 paneles <- c("Admin")
-
-lapply(paneles, function(x){
+||||||| aac116e
+  
+#server summary ================================================================
+serverOverview("overview") 
+serverSummary("summary")
   
   observe({
-    if (input$Paneles == x)  {
-      
-      showModal(
-        ModalAdmin()
-      )
-      
-    }
+    
+    print(input$Paneles)
   })
   
+  #Password admin ===============================================================
   
-})
-  
+paneles <- c("Admin", "Feedback", "sessoes_fnm", "modulos_sgr", "sessoes_sgr_fnm")
+=======
+>>>>>>> 05666e92e81c499b64daacd3f8621b13889c9fb9
+
+  # 
+  # observe({
+  #   
+  #   print(input$Paneles)
+  # })
   
 
+
   
-  observeEvent(input$ok,{
-    
-    password_user <- data_login$password[data_login$user == input$user]
-    
-    #If user doesnt exist
-    if(length(password_user)==0){
-      
-      showModal(
-        ModalAdmin(TRUE)
-      ) 
-      #if password is incorrect
-    } else if(input$password != password_user){
-      
-      showModal(
-        ModalAdmin(TRUE)
-      ) 
-    } else {
-      
-      removeModal()
-    }
-   
-    
-    
-  })
-  
-  
-  serverAdmin("admin")
+
   
 }
 
