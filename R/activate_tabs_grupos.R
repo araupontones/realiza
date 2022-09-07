@@ -2,7 +2,7 @@
 
 
 
-activate_tabs_grupos <- function(input, session, grupos, tipos, dir_data){
+activate_tabs_grupos <- function(input, session, grupos, tipos){
   
   #walk each grupo
   lapply(grupos, function(grupo){
@@ -21,12 +21,12 @@ activate_tabs_grupos <- function(input, session, grupos, tipos, dir_data){
           #run server cidades
           if(tipo == "cidades"){
             
-            serverCidade(id_server, grupo = grupo, dir_data)
+            serverCidade(id_server, grupo = grupo)
             
             #run server sessoes
           } else {
             
-            serverSessoes(id_server, grupo = grupo, tipo, dir_data)
+            serverSessoes(id_server, grupo = grupo, tipo)
             
           }
           

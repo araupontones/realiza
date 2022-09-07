@@ -14,9 +14,7 @@ ui_overview <- function(id){
    tagList(
     
   selectInput(NS(id,"cidades"), label = "Cidade", choices = c("Todas", "Beira", "Maputo", "Nampula")),
-  
-  uiOutput(NS(id,"header_summary")),
-  withSpinner(uiOutput(NS(id, "cards_total")))
+   uiOutput(NS(id, "cards_total"))
 
  )
   
@@ -25,20 +23,12 @@ ui_overview <- function(id){
 
 
 #Server ======================================================================
-serverOverview <- function(id, dir_data) {
+serverOverview <- function(id) {
   moduleServer(id, function(input, output, session) {
     
    #prepare data -----------------------------------------------------------
-<<<<<<< HEAD
     emprendedoras <- rio::import(file.path("data/0look_ups/emprendedoras.rds"))
     data_overview <- rio::import(file.path("data/1.zoho/3.clean/all_presencas.rds"))
-||||||| aac116e
-    emprendedoras <- rio::import("data/0look_ups/emprendedoras.rds")
-    data_overview <- rio::import("data/1.zoho/3.clean/all_presencas.rds")
-=======
-    emprendedoras <- rio::import(file.path(dir_data,"0look_ups/emprendedoras.rds"))
-    data_overview <- rio::import(file.path(dir_data,"1.zoho/3.clean/all_presencas.rds"))
->>>>>>> 05666e92e81c499b64daacd3f8621b13889c9fb9
     
     
     #data reactive by cidade ==================================================
@@ -99,26 +89,22 @@ serverOverview <- function(id, dir_data) {
         group_by(grupo_accronym) %>%
         summarise(total_act = length(unique(actividade, Data)),
                   #presencas sessao inaugural do total
-                  sessao_inagural = sum(actividade == "Sessão Inaugural" & Status == "Presente" & status_realiza == "CONFIRMADA"),
+                  sessao_inagural = sum(actividade == "Sessão Inaugural" & Status == "Presente"),
                   #count confirmadas en listas
                   confirmadas = sum(status_realiza == "CONFIRMADA"),
                   #count presencas
                   presencas = sum(Status == "Presente" & status_realiza == "CONFIRMADA"),
-                  #estimate ratio of presencas of confirmadas
+                  #estimate ration of presencas of confirmadas
                   presenca_perc = paste0(round(presencas/confirmadas * 100,1), "%"),
-                  
                   .groups = 'drop'
                   
-        ) %>%
-        select(-confirmadas)
+        )
       
       
       #all info in one table
       data_cards <- total %>%
         left_join(atividades,  by= "grupo_accronym") %>%
-        mutate(sessao_inagural_perc = paste0(round(sessao_inagural / confirmadas * 100,2), "%")
-              
-               )
+        mutate(sessao_inagural_perc = paste0(round(sessao_inagural / total_emp * 100,2), "%"))
       
       data_cards
       
@@ -134,7 +120,6 @@ serverOverview <- function(id, dir_data) {
       
       
       lapply(split(data_cards(), data_cards()$grupo_accronym), function(x){
-       
         
         titulo <- x$grupo_accronym[1]
         
@@ -145,16 +130,16 @@ serverOverview <- function(id, dir_data) {
                           h2(class = 'card-title', titulo),
                           tags$ul(class = 'list-group',
                                   tags$li(class = 'list-group-item',
-                                          HTML(glue("<b>Inscritas:</b> {x$total_emp}"))
+                                          paste("Emprendedoras inscritas no programa:", x$total_emp)
                                   ),
                                   tags$li(class = 'list-group-item',
-                                          HTML(glue("<b>Confirmadas:</b> {x$confirmadas} ({x$confirmadas_perc})"))     
+                                          paste("Total confirmadas:", x$confirmadas_perc)
                                   ),
                                   tags$li(class = 'list-group-item',
-                                          glue("Participou da sessão inaugural (das confirmadas): {x$sessao_inagural} ({x$sessao_inagural_perc})")
+                                          paste("Participou da sessão inaugural (do total):", x$sessao_inagural_perc)
                                   ),
                                   tags$li(class = 'list-group-item',
-                                          paste("Taxa de presença (das confirmadas):", x$presenca_perc)
+                                          paste("Taxa de presença nas actividades (das confirmadas):", x$presenca_perc)
                                   )
                           )
                           
@@ -168,14 +153,6 @@ serverOverview <- function(id, dir_data) {
       
       })
     
-    
-    
-    output$header_summary <- renderUI({
-      HTML(
-        
-      glue("<h2>{sum(data_cards()$confirmadas)} emprendedoras confirmadas</h2>")
-      )
-    })
     
     output$cards_total <- renderUI({
       
