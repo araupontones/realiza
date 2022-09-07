@@ -27,8 +27,8 @@ serverOverview <- function(id) {
   moduleServer(id, function(input, output, session) {
     
    #prepare data -----------------------------------------------------------
-    emprendedoras <- rio::import("data/0look_ups/emprendedoras.rds")
-    data_overview <- rio::import("data/1.zoho/3.clean/all_presencas.rds")
+    emprendedoras <- rio::import(file.path("data/0look_ups/emprendedoras.rds"))
+    data_overview <- rio::import(file.path("data/1.zoho/3.clean/all_presencas.rds"))
     
     
     #data reactive by cidade ==================================================

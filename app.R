@@ -14,16 +14,16 @@ ui <- fluidPage(
   uiOutput("last_refreshed"),
   navbarPage("Realiza",
              id = "Paneles",
-             navbarMenu("Resumo",
-                        tabPanel("Overview",
-                                 ui_overview("overview")
-                        ),
-                        tabPanel("Presencas",
-                                 ui_summary("summary")
-                                 
-                        )
-                        
-             ),
+             # navbarMenu("Resumo",
+             #            tabPanel("Overview",
+             #                     ui_overview("overview")
+             #            ),
+             #            tabPanel("Presencas",
+             #                     ui_summary("summary")
+             #                     
+             #            )
+             #            
+             # ),
              
             
              
@@ -83,8 +83,8 @@ serverSummary("summary")
   })
   
   #Password admin ===============================================================
-  
-paneles <- c("Admin", "Feedback", "sessoes_fnm", "modulos_sgr", "sessoes_sgr_fnm")
+#"Feedback", "sessoes_fnm", "modulos_sgr", "sessoes_sgr_fnm"
+paneles <- c("Admin")
 
 lapply(paneles, function(x){
   

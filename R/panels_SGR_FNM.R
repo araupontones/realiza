@@ -15,11 +15,6 @@ panels_SGR_FNM <- function(id){
                       ui_sessoes("sgr_fnm_modulos", grupo = "fnm_sgr")
                       
                       
-             ),
-             tabPanel("Por Cidade",
-                      value = "cidades_sgr_fnm",
-                      ui_cidades("sgr_fnm_cidades")  
-                      
              )
   )
     

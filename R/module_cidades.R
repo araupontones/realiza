@@ -54,11 +54,21 @@ serverCidade <- function(id, grupo) {
     
     #Reactive elements ========================================================
     
+    
+    confirmadas <- reactive({
+      
+      length(unique(
+      data_stats$Emprendedora[data_stats$status_realiza == "CONFIRMADA" & data_stats$Cidade == input$cidades]
+      ))
+      
+    })      
+    
     #react to selected cidade
     data_cidade <- reactive({
       
       data_stats %>%
-        dplyr::filter(Cidade == input$cidades) %>%
+        dplyr::filter(Cidade == input$cidades,
+                      status_realiza == "CONFIRMADA") %>%
         group_by(actividade_label) %>%
         avg_presencas()
     })
@@ -81,7 +91,8 @@ serverCidade <- function(id, grupo) {
       
       tags$div(
       h1(input$cidades),
-      h2(paste0("Média de presenças: ", avg))
+      h2(glue("{confirmadas()} emprendedoras confirmadas")),
+      h3(paste0("Taxa de presenças (das confirmadas): ", avg))
      
      
       )
