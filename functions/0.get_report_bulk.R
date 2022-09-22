@@ -116,7 +116,8 @@ get_report_bulk <- function(
    
     reporte <- plyr::rbind.fill(reporte, reporte_2) ##!!
     
-    from <- nrow(reporte) +1
+    from <- nrow(reporte) 
+    #+1
     
   }
   
@@ -128,8 +129,9 @@ get_report_bulk <- function(
     mutate_if(is.list, unnest_value_from_list) %>%
     mutate_if(is.list, unlist) %>%
     #remove value from list
-    mutate_if(is.character, clean_zoho_list)
-  
+    mutate_if(is.character, clean_zoho_list) %>%
+    distinct()
+
   
   return(reporte_clean)
   

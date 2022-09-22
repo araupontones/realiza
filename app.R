@@ -14,18 +14,7 @@ ui <- fluidPage(
   uiOutput("last_refreshed"),
   navbarPage("Realiza",
              id = "Paneles",
-             # navbarMenu("Resumo",
-             #            tabPanel("Overview",
-             #                     ui_overview("overview")
-             #            ),
-             #            tabPanel("Presencas",
-             #                     ui_summary("summary")
-             #                     
-             #            )
-             #            
-             # ),
              
-            
              
             panels_FNM("FNM"),
              

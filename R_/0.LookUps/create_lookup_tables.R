@@ -16,8 +16,6 @@ actividades_zoho <- download_realiza("Actividades_Report")
 sessoes_fixas <- download_realiza("Sessoes_fixas_Report")
 emprendedoras_zoho <- download_realiza('Emprendedoras_Report')
 
-
-
 #Look up emprendedoras ========================================================
 
 
@@ -29,8 +27,7 @@ emprendedoras <- emprendedoras_zoho %>%
         Cidade,
         Agente = Facilitadoras,
         Grupo = Grupos,
-        status_realiza)%>%
-    distinct() %>%
+        status_realiza) %>%
   #Clean agente and grupos_fixos
   mutate(across(c(Agente, Grupos_fixos), function(x)clean_zoho_lisr(x))
          ) %>%
