@@ -1,6 +1,20 @@
 library(shiny)
 library(dplyr)
 library(shinythemes)
+library(shinycssloaders)
+library(ggplot2)
+library(DT)
+library(glue)
+library(httr)
+library(jsonlite)
+library(zohor)
+library(stringr)
+library(forcats)
+library(rio)
+
+
+gmdacr::load_functions("functions")
+
 
 ui <- fluidPage(
   
