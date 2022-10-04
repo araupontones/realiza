@@ -39,7 +39,8 @@ sgr_clean <- import(infile_sgr)
 
 
 
-modulos <- c("Sessões de coaching", "1.1", "Introducao a sessao de parceiros", "1.2", "1.3",
+modulos <- c("Sessão Inaugural", "Sessões de coaching", 
+             "1.1", "Introducao a sessao de parceiros", "1.2", "1.3",
              "2.1", "2.2", "2.3", "Sessao intercalar de parceiros",
              "3.1", "3.2", "3.3","Sessao de encerramento de parceiros")
 
@@ -85,7 +86,7 @@ emprendedoras <- lapply(split(sgr_clean, sgr_clean$Emprendedora), function(emp){
 
 #'Clean Modulo to be able to sort it ============================================
 #'Cretate divs and divs of parceiro
-emprendedoras_dashboard <- do.call(plyr::rbind.fill,emprendedoras)%>%
+emprendedoras_dashboard <- do.call(plyr::rbind.fill,emprendedoras) %>%
   mutate(Modulo = factor(Modulo,
                          levels = modulos,
                          ordered = T)) %>%
@@ -93,6 +94,7 @@ emprendedoras_dashboard <- do.call(plyr::rbind.fill,emprendedoras)%>%
   mutate(
     #Identify type of activity
     actividade_label = case_when(grepl("coaching", Modulo) ~ "Coaching",
+                                 grepl("Inaugural", Modulo) ~ "Inaugural",
                           grepl("parceiro", Modulo) ~ "Modulos",
                           T ~ "Modulos"),
     div = div_status(presente, ausente, agendado, pendente),
@@ -146,8 +148,6 @@ sgr_div <- sgr_stats %>%
   
 
           
-
-
 
 
 

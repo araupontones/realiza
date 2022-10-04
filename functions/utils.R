@@ -112,6 +112,7 @@ presente_ausente <- function(.data) {
 #' variable to create div of status
 div_status <- function(presente, ausente, agendado, pendente, ...){
   
+   
   
   case_when(presente == 1 ~ '<div class="dot green"></div>',
             ausente == 1 ~ '<div class="dot red"></div>',
