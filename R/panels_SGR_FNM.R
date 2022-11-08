@@ -15,6 +15,10 @@ panels_SGR_FNM <- function(id){
                       ui_sessoes("sgr_fnm_modulos", grupo = "fnm_sgr")
                       
                       
+             ),
+             tabPanel("Agendadas",
+                      value = "agenda_sgr_fnm",
+                      ui_agendas("sgr_fnm_agenda", grupo = "fnm")
              )
   )
     

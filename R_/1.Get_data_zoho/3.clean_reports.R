@@ -82,9 +82,10 @@ all_presencas <- select(clean_them$fnm,
                         Emprendedora,
                         Data,
                         actividade,
-                        data_posix
+                        data_posix,
+                        Nome_do_evento
                         ) %>%
-  rbind(select(clean_them$sgr,
+  plyr::rbind.fill(select(clean_them$sgr,
                Status,
                Emprendedora,
                Data,
@@ -95,7 +96,10 @@ all_presencas <- select(clean_them$fnm,
   #Only keep status that has been marked either as presente or ausente
   dplyr::filter(!Status %in% c("Agendado")) %>%
   mutate(presente = Status == "Presente",
-         week = lubridate::week(data_posix)) 
+         week = lubridate::week(data_posix),
+         month = as.character(lubridate::month(data_posix, label = TRUE, abbr = F, locale = "Portuguese"))
+         ) 
+
 
 
 

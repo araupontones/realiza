@@ -24,7 +24,13 @@ activate_tabs_grupos <- function(input, session, grupos, tipos){
             serverCidade(id_server, grupo = grupo)
             
             #run server sessoes
-          } else {
+          } else if(tipo == "agenda"){
+            
+            
+            serverAgenda(id_server, grupo)
+            
+            
+            }else {
             
             serverSessoes(id_server, grupo = grupo, tipo)
             

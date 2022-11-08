@@ -71,12 +71,15 @@ output$last_refreshed <- renderUI({
 #For this to work the name id of the uis and values of panel should be consisten
 #See consistency in panels_FNM.R | Panels_SGR.R | Panels_SGR_FNM.R
 activate_tabs_grupos(grupos = c("fnm", "sgr", "sgr_fnm"), 
-                     tipos = c("sessoes", "modulos", "cidades"),
+                     tipos = c("sessoes", "modulos", "cidades", "agenda"),
                      input,
                      session
                      )
 
   
+
+
+
 #server summary ================================================================
 serverOverview("overview") 
 serverSummary("summary")
