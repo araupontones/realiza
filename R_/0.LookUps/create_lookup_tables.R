@@ -37,7 +37,7 @@ emprendedoras <- emprendedoras_zoho %>%
 
 
 
-export(emprendedoras, file.path(exdir, "emprendedoras.rds"))
+rio::export(emprendedoras, file.path(exdir, "emprendedoras.rds"))
 
 
 
@@ -51,7 +51,7 @@ agentes <- fac_zoho %>%
          Cidade)
 
 
-export(agentes, file.path(exdir, "agentes.rds"))
+rio::export(agentes, file.path(exdir, "agentes.rds"))
 
 
 
@@ -65,7 +65,7 @@ facilitadoras <- fac_zoho %>%
 
 
 
-export(facilitadoras, file.path(exdir, "facilitadoras.rds"))
+rio::export(facilitadoras, file.path(exdir, "facilitadoras.rds"))
 
 
 
@@ -78,7 +78,7 @@ cidades <- fac_zoho %>%
   ungroup()
 
 
-export(cidades, file.path(exdir, "cidades.rds"))
+rio::export(cidades, file.path(exdir, "cidades.rds"))
 
 #Look Up Grupo ================================================================
 grupos <- grupos_zoho %>%
@@ -87,7 +87,7 @@ grupos <- grupos_zoho %>%
 
 
 names(grupos_zoho)
-export(grupos, file.path(exdir, "grupos.rds"))
+rio::export(grupos, file.path(exdir, "grupos.rds"))
 
 
 #Look up Turmas ===============================================================
@@ -95,7 +95,7 @@ turmas <- turmas_zoho %>%
   select(Turma = turma_fixa,
          ID_Turma = ID)
 
-export(turmas, file.path(exdir, "turmas.rds"))
+rio::export(turmas, file.path(exdir, "turmas.rds"))
 
 #Actividades =================================================================
 
@@ -106,7 +106,7 @@ actividades <- actividades_zoho %>%
          Grupal_o_individual,
          sessoes = sessoies_obrigatorias)
 
-export(actividades, file.path(exdir, "actividades.rds"))
+rio::export(actividades, file.path(exdir, "actividades.rds"))
 
 #Sessoes fixas ==================================================================
 
@@ -115,4 +115,4 @@ sessoes <- sessoes_fixas %>%
   select(Modulo = sessao__ixa)
 
 
-export(sessoes, file.path(exdir, "sessoes.rds"))
+rio::export(sessoes, file.path(exdir, "sessoes.rds"))

@@ -39,5 +39,5 @@ names(reportes) <- names(fetch_this)
 
 #Export ========================================================================
 # export list of reportes
-export(reportes, exfile)
+rio::export(reportes, exfile)
 

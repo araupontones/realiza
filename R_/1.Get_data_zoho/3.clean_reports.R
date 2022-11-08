@@ -69,8 +69,8 @@ names(clean_them) <- grupos
 
 
 #export ========================================================================
-export(clean_them$fnm, exfile_fnm)
-export(clean_them$sgr, exfile_sgr)
+rio::export(clean_them$fnm, exfile_fnm)
+rio::export(clean_them$sgr, exfile_sgr)
 
 
 
@@ -103,7 +103,7 @@ all_presencas <- select(clean_them$fnm,
 
 
 
-export(all_presencas, exfile_all)
+rio::export(all_presencas, exfile_all)
 
 #remove temp objects
 rm(indir, infile_fnm, infile_sgr, exdir, exfile_fnm, exfile_sgr, all_presencas)

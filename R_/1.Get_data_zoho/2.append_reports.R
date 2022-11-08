@@ -55,7 +55,7 @@ fnm <- plyr::rbind.fill(fnm_group, fnm_ind) %>%
 
 #4. Export
 
-export(fnm, exfile_fnm)
+rio::export(fnm, exfile_fnm)
 
 
 # Append SGR ===================================================================
@@ -87,7 +87,7 @@ sgr <- plyr::rbind.fill(sgr_train, sgr_ind)
 
 
 #4 . Export ===================================================================
-export(sgr, exfile_sgr)
+rio::export(sgr, exfile_sgr)
 
 
 

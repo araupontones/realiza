@@ -153,8 +153,8 @@ sgr_div <- sgr_stats %>%
 
 #Export ========================================================================
 
-export(sgr_stats, exfile_sgr_stats)
-export(sgr_div, exfile_sgr_div)
+rio::export(sgr_stats, exfile_sgr_stats)
+rio::export(sgr_div, exfile_sgr_div)
 
 
 
