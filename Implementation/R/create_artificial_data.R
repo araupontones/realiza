@@ -57,7 +57,7 @@ ids <- more_turmas %>%
          Grupos_fixos = ID_Turma,
          Facilitadoras = ID_agente)
 
-export(ids,exfile)
+rio::export(ids,exfile)
 
 
 
