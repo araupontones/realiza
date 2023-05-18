@@ -102,36 +102,9 @@ all_presencas <- select(clean_them$fnm,
 
 
 
-
+View(all_presencas)
 rio::export(all_presencas, exfile_all)
 
 #remove temp objects
 rm(indir, infile_fnm, infile_sgr, exdir, exfile_fnm, exfile_sgr, all_presencas)
-
-
-# 
-# View(clean_them$fnm)
-# 
-# fnm_clean <- import(infile_fnm) %>%
-# #clean dates (get rid of time, to be in portuguese, and create data_posix for vis)
-# create_dates(Data) %>%
-#   #drop cases with empty date, missing status, or missing name of emprendedora
-#   drop_empty() %>%
-#   mutate(Status = scheduled_status(Status)) %>%
-#   presente_ausente() 
-# 
-# 
-# 
-# 
-# View(sgr_clean)
-# #Clean SGR ====================================================================
-# sgr_clean <- import(infile_sgr) %>%
-#   #clean dates (get rid of time, to be in portuguese, and create data_posix for vis)
-# create_dates(Data) %>%
-#   #drop cases with emptu date, missing status, or missing name of emprendedora
-#   drop_empty() %>%
-#   mutate(Status = scheduled_status(Status)) %>%
-#   presente_ausente() 
-#                 
-# export(sgr_clean, exfile_sgr)
 

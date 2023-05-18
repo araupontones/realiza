@@ -31,6 +31,14 @@ ui <- fluidPage(
              id = "Paneles",
              
              
+             navbarMenu("test",
+                        tabPanel("Test",
+                                 value = "test",
+                                 tableOutput("table")
+                                 
+                        )
+                        ),
+             
             panels_FNM("FNM"),
              
             panels_SGR("SGR"),
@@ -55,6 +63,66 @@ ui <- fluidPage(
 
 
 server <- function(input, output, session) {
+#read presencas
+  presencas <- rio::import("data/1.zoho/2.clean_reports_zoho.rds")
+#read divs 
+  divs <- rio::import('data/2.Dashboard/divs.rds')
+#created in R_/3/
+#get the id of all the botones
+#This ID is created in R_/clean_repors.R
+  botones <- c(presencas$rec_id)
+
+  
+
+  
+  
+  lapply(botones, function(id){
+  
+  
+    data_boton <- reactive(
+      
+      filter(presencas, rec_id == id)
+    )
+    
+    
+      
+    observeEvent(input[[id]], {
+      showModal(modalDialog(
+        title = "Informacao do evento",
+        HTML(glue(
+          '<b>Evento:</b> {data_boton()$Nome_do_evento} <br>
+          <b>Facilitadora/Agente:</b> {data_boton()$Facilitadora}<br>
+          <b>Data do evento:</b> {data_boton()$data_evento} <br>
+          <b>Status:</b> {data_boton()$Status}
+          '
+        )),
+        easyClose = TRUE,
+        footer = NULL
+      ))
+    })
+    
+    
+    
+  })
+  
+ 
+  
+  output$table <- renderTable({
+    divs
+    
+    # DT::datatable(
+    #   divs,
+    #   escape = F,
+    #   rownames = F,
+    #   options = list(pageLength = 25,
+    #                  dom = 't',
+    #                  ordering = F,
+    #                  selection = 'single'
+    #                  #selector = "td:not(.not-selectable)"
+    #                  )
+    # )
+    
+  }, sanitize.text.function = function(x) x)
   
 last_refreshed <- rio::import("data/2.Dashboard/last_refreshed.rds")
 

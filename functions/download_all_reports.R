@@ -1,16 +1,16 @@
 download_realiza <- function(report){
   
   rep <- get_report_bulk(url_app = "https://creator.zoho.com",
-                               account_owner_name = "araupontones",
-                               app_link_name = "realiza",
+                               account_owner_name = "muvalink",
+                               app_link_name = "realiza-app",
                                report_link_name = report,
                                access_token = "",
                                criteria = "ID != 0",
                                limit = 200,
                                from = 1,
-                               client_id = "1000.V0FA571ML6VV7YFWRC4Q7OKQ32U5PZ",
-                               client_secret = "c551969c7d49a7a945ac2da12d1a3fe5f241b8dae6",
-                               refresh_token = "1000.b11df28b89daaeb2df10fa2c43178db6.6f953944b607f0ff366915cb9a770edc"
+                               client_id = "1000.70NUR07O0MQT8DK3A6XKKBTD6MFKOE",
+                               client_secret = "3c381997fbcfed2112516e92e5d861a153d8c36e94",
+                               refresh_token = "1000.09a7defc533da6ff339e5379cdf39b9b.f32f6b07f38c86d033ca791c7c8e12e0"
                                
   )                       
   
