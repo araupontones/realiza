@@ -77,7 +77,6 @@ server <- function(input, output, session) {
 #To check which is the active panel
   observe({
 
-    print(paste("Ja",input$Paneles))
     print(active_grupo())
   })
   
@@ -153,9 +152,30 @@ output$last_refreshed <- renderUI({
 
 #New server grupos ============================================================
 
-serverSessoesObrigatorias("modulos_cresca", presencas)
-serverSessoesObrigatorias("sessoes_conecta", presencas)
-serverSessoesObrigatorias("sessoes_movimenta", presencas)
+rupos <- c("movimenta", "cresca", "conecta")
+sessoes <- paste(c("sessoes"), grupos , sep = "_")
+modulos <- paste(c("modulos"), grupos , sep = "_")
+
+sessoes_modulos <- c(sessoes, modulos)
+
+
+lapply(sessoes_modulos, function(active){
+  
+ 
+  observe({
+    
+    if(input$Paneles == active){
+      message(paste("active panel:", active))
+      serverSessoesObrigatorias(active, presencas)
+      
+    }
+    
+    
+  })
+  
+})
+
+
 
 #Server grupos  ================================================================
 #Activate the servers of each gropu when the tab is selected

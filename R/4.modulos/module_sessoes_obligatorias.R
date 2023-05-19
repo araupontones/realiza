@@ -42,7 +42,7 @@ ui_sessoes_obligatorias <- function(id){
 
 #Server ======================================================================
 serverSessoesObrigatorias <- function(id,
-                                      data_grupo,
+                                      data_presencas,
                                       #grupo, 
                                       tipo_sessao = "modulos") {
   moduleServer(id, function(input, output, session) {
@@ -57,12 +57,22 @@ serverSessoesObrigatorias <- function(id,
 
     })
     
+    mode <- identify_mode(id)
+    
 #Update data for this panel based on user inputs ===============================
     data_panel <- reactive({
       
-      message(id)
-      message(identify_grupo(id))
-      dt <- data_grupo %>%
+      dt <- data_presencas
+      
+      if(mode == "modulos"){
+        
+        dt <- dt %>%
+          select(-Facilitadora) %>%
+          rename(Facilitadora = Turma)
+        
+      }
+      
+      dt <- dt %>%
         filter(Cidade == input$cidades) %>%
         filter(Grupo == grupo())
         
