@@ -1,3 +1,5 @@
+cli::cli_alert_info("Cleaning reports------------------------------------------")
+
 #'@Description Takes all the downloeaded reports and creates a single and 
 #'clean data with all the presencas. This data has the following columns:
 #' from_report: Zoho report from which the record comes
@@ -123,10 +125,13 @@ clean_status <- clean %>%
   mutate(Status = ifelse(Status == "", "Pendiente", Status),
          agendada = T,
          presente = Status == "Presente",
-         ausente = Status == "Ausente"
+         ausente = Status == "Ausente",
+         
+         #drop Realiza & from grupo
+         Grupo = str_trim(str_remove(Grupo, "Realiza & "))
          )
 
 
 #export
 rio::export(clean_status, exfile)
-
+cli::cli_alert_success("Clean data saved in data/1.zoho")

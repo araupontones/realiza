@@ -26,7 +26,7 @@ fetch_this <- c(
 
 
 # Download reports
-cli::cli_alert_info("Downloading reports")
+cli::cli_alert_info("Downloading reports---------------------------------------")
 
 # #download data ===============================================================
 # it is saved in a list variable 
