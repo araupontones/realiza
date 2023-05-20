@@ -146,7 +146,7 @@ serverSessoes <- function(id, grupo, tipo_sessao = "modulos") {
     
     
     output$header <- renderUI({
-      print(id)
+      #print(id)
       #get average of presencas of this agente
       avg <- stats_agentes()$presencas_avg[stats_agentes()$Agente == input$agentes]
       

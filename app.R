@@ -40,17 +40,18 @@ ui <- fluidPage(
              #            ),
              
              #the value of the selected panel is defined within panels_cresca()
+             #panels_cresca_conecta(title = "Cresça"),
              panels_cresca_conecta(title = "Cresça" , value = "modulos_cresca"),
              panels_cresca_conecta(title = "Conecta" , value = "sessoes_conecta"),
              panels_cresca_conecta(title = "Movimienta" , value = "sessoes_movimenta"),
              
-            panels_FNM("FNM"),
-             
-            panels_SGR("SGR"),
-             
-            panels_SGR_FNM("FNM + SGR"),
-             
-            panel_powerBI("Feedback"),
+            # panels_FNM("FNM"),
+            #  
+            # panels_SGR("SGR"),
+            #  
+            # panels_SGR_FNM("FNM + SGR"),
+            #  
+            # panel_powerBI("Feedback"),
             
             tabPanel("Admin",
                      ui_admin("admin")),
@@ -73,12 +74,6 @@ server <- function(input, output, session) {
 #read divs 
   divs <- rio::import('data/2.Dashboard/divs.rds')
   
-  
-#To check which is the active panel
-  observe({
-
-    print(active_grupo())
-  })
   
   
 #reactive data =================================================================
@@ -152,11 +147,11 @@ output$last_refreshed <- renderUI({
 
 #New server grupos ============================================================
 
-rupos <- c("movimenta", "cresca", "conecta")
+grupos <- c("movimenta", "cresca", "conecta")
 sessoes <- paste(c("sessoes"), grupos , sep = "_")
 modulos <- paste(c("modulos"), grupos , sep = "_")
-
-sessoes_modulos <- c(sessoes, modulos)
+agendadas <- paste(c("agendadas"), grupos , sep = "_")
+sessoes_modulos <- c(sessoes, modulos, agendadas)
 
 
 lapply(sessoes_modulos, function(active){
@@ -167,6 +162,7 @@ lapply(sessoes_modulos, function(active){
     if(input$Paneles == active){
       message(paste("active panel:", active))
       serverSessoesObrigatorias(active, presencas)
+      serverAgendadas(active, presencas)
       
     }
     
@@ -195,11 +191,11 @@ lapply(sessoes_modulos, function(active){
 serverOverview("overview") 
 serverSummary("summary")
   
-  # observe({
-  #   
-  #   print(input$Paneles)
-  # })
-  
+  observe({
+
+    print(input$Paneles)
+  })
+
   #Password admin ===============================================================
 #"Feedback", "sessoes_fnm", "modulos_sgr", "sessoes_sgr_fnm"
 paneles <- c("Admin")

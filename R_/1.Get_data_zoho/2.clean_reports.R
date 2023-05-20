@@ -129,9 +129,11 @@ clean_status <- clean %>%
          
          #drop Realiza & from grupo
          Grupo = str_trim(str_remove(Grupo, "Realiza & "))
-         )
+         ) %>%
+  #artificially create sessos de coaching 1, 2 ,3, 4, etc
+  create_coaching(.)
 
-
+View(clean_status)
 #export
 rio::export(clean_status, exfile)
 cli::cli_alert_success("Clean data saved in data/1.zoho")
