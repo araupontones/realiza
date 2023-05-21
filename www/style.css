@@ -15,11 +15,11 @@ body{
 }
 
 .dot {
-  height: 10px;
-  margin-right: 1px;
-  width: 10px;
-  border-radius: 100%;
-  display: inline-block;
+  height: 10px !important;
+  margin-right: 1px !important;
+  width: 10px !important;
+  border-radius: 100% !important;
+  display: inline-block !important;
 }
 
 .green{

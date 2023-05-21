@@ -41,9 +41,9 @@ ui <- fluidPage(
              
              #the value of the selected panel is defined within panels_cresca()
              #panels_cresca_conecta(title = "Cresça"),
-             panels_cresca_conecta(title = "Cresça" , value = "modulos_cresca"),
-             panels_cresca_conecta(title = "Conecta" , value = "sessoes_conecta"),
-             panels_cresca_conecta(title = "Movimienta" , value = "sessoes_movimenta"),
+             panels_UI(title = "Cresça" , value = "modulos_cresca"),
+             panels_UI(title = "Conecta" , value = "sessoes_conecta"),
+             panels_UI(title = "Movimienta" , value = "sessoes_movimenta"),
              
             # panels_FNM("FNM"),
             #  
@@ -72,7 +72,7 @@ server <- function(input, output, session) {
 #read presencas
   presencas <- rio::import("data/1.zoho/2.clean_reports_zoho.rds")
 #read divs 
-  divs <- rio::import('data/2.Dashboard/divs.rds')
+  #divs <- rio::import('data/2.Dashboard/divs.rds')
   
   
   
@@ -135,7 +135,7 @@ server <- function(input, output, session) {
   
  
   
-last_refreshed <- rio::import("data/2.Dashboard/last_refreshed.rds")
+last_refreshed <- rio::import("data/1.zoho/last_refreshed.rds")
 
 output$last_refreshed <- renderUI({
   
@@ -150,8 +150,8 @@ output$last_refreshed <- renderUI({
 grupos <- c("movimenta", "cresca", "conecta")
 sessoes <- paste(c("sessoes"), grupos , sep = "_")
 modulos <- paste(c("modulos"), grupos , sep = "_")
-agendadas <- paste(c("agendadas"), grupos , sep = "_")
-sessoes_modulos <- c(sessoes, modulos, agendadas)
+
+sessoes_modulos <- c(sessoes,modulos)
 
 
 lapply(sessoes_modulos, function(active){
@@ -162,6 +162,25 @@ lapply(sessoes_modulos, function(active){
     if(input$Paneles == active){
       message(paste("active panel:", active))
       serverSessoesObrigatorias(active, presencas)
+      #serverAgendadas(active, presencas)
+      
+    }
+    
+    
+  })
+  
+})
+
+
+agendadas <- paste(c("agendadas"), grupos , sep = "_")
+lapply(agendadas, function(active){
+  
+  
+  observe({
+    
+    if(input$Paneles == active){
+      message(paste("active panel:", active))
+      #serverSessoesObrigatorias(active, presencas)
       serverAgendadas(active, presencas)
       
     }
@@ -172,29 +191,17 @@ lapply(sessoes_modulos, function(active){
 })
 
 
-
 #Server grupos  ================================================================
-#Activate the servers of each gropu when the tab is selected
-#For this to work the name id of the uis and values of panel should be consisten
-#See consistency in panels_FNM.R | Panels_SGR.R | Panels_SGR_FNM.R
-# activate_tabs_grupos(grupos = c("fnm", "sgr", "sgr_fnm"), 
-#                      tipos = c("sessoes", "modulos", "cidades", "agenda"),
-#                      input,
-#                      session
-#                      )
-
-  
-
 
 
 #server summary ================================================================
-serverOverview("overview") 
-serverSummary("summary")
+#serverOverview("overview") 
+#serverSummary("summary")
   
-  observe({
-
-    print(input$Paneles)
-  })
+  # observe({
+  # 
+  #   print(input$Paneles)
+  # })
 
   #Password admin ===============================================================
 #"Feedback", "sessoes_fnm", "modulos_sgr", "sessoes_sgr_fnm"

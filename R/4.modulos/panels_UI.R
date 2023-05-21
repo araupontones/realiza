@@ -2,7 +2,7 @@
 #'@param title is the title of the navbarMenu
 #'@param value the value of the selected tab
 
-panels_cresca_conecta <- function(title, value){
+panels_UI <- function(title, value){
 
   
 #identifies the group

@@ -24,11 +24,11 @@ zoho_data <- lapply(zoho_scripts, function(x){
 
 
 
-dashboard_data <- lapply(for_dashboard, function(x){
-  
-  print(x)
-  source(x, encoding = "UTF-8")
-  
-})
+# dashboard_data <- lapply(for_dashboard, function(x){
+#   
+#   print(x)
+#   source(x, encoding = "UTF-8")
+#   
+# })
 
 

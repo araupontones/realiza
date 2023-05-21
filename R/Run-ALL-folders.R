@@ -10,7 +10,7 @@ read_all <- lapply(all_modules, function(module){
   
   #dont read R directory
   if(module != "R") {
-    cli::cli_alert_info(module)
+    cli::cli_alert_info(glue::glue('{module}-----------------------------------'))
     
     #list of files within each directory
     module_scripts <- list.files(module,pattern = ".R", full.names = T, recursive = T)

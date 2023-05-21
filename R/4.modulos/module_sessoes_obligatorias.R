@@ -28,7 +28,7 @@ ui_sessoes_obligatorias <- function(id){
                 #Header of Agente (name and % of assistance)
                 uiOutput(NS(id,"header")),
                 #table with presences
-                withSpinner(tableOutput(NS(id,"table")))
+                withSpinner(tableOutput(NS(id,"table")), color = 'black')
       )
     )
     
@@ -59,7 +59,7 @@ serverSessoesObrigatorias <- function(id,
     
     mode <- identify_mode(id)
     
-    message(id)
+    #message(id)
     actividades_panel <- identify_actividades(id)
     
     
@@ -71,6 +71,7 @@ serverSessoesObrigatorias <- function(id,
       #%>%
        # filter(actividade %in% actividades_panel)
       
+      #for the modulos, the selector is the Turma
       if(mode == "modulos"){
         
         dt <- dt %>%
@@ -79,11 +80,13 @@ serverSessoesObrigatorias <- function(id,
         
       }
       
+      #for sessoes Facilitadora remains
       dt <- dt %>%
         filter(Cidade == input$cidades) %>%
         filter(Grupo == grupo())
-        
-      print(tabyl(dt, Grupo))
+      
+      #print(tabyl(dt, Grupo))  
+      #print(tabyl(dt, Facilitadora))
       
       dt
       
@@ -128,21 +131,21 @@ serverSessoesObrigatorias <- function(id,
 
   
 #update data of user based on selected agente =================================
-    
+
     data_agente <- reactive(
-      
+
       data_panel() %>%
         filter(Facilitadora == input$agentes)
     )
-    
-    
-    
-#data stats agente ============================================================
-    
-    
+
+
+
+# #data stats agente ============================================================
+
+
     stats_agente <- reactive(
       data_agente() %>%
-        #count presencas by emprendedoras 
+        #count presencas by emprendedoras
         group_by(Emprendedora, Facilitadora) %>%
         #count whether emprendedoras have completed sessoes obligatorias
         summarise(sessoes = sum(agendada, na.rm = T),
@@ -161,25 +164,25 @@ serverSessoesObrigatorias <- function(id,
                   avg_cumple = cumple_obligatorias/emprendedoras,
                   .groups = 'drop'
                   )
-        
-      
-        )
-      
 
-    
-# Transform data to botones ===================================================
-    
+
+        )
+
+
+
+# # Transform data to botones ===================================================
+
     output$table <- renderTable({
       data_agente() %>%
         crear_data_botones(.)
-      
+
       #divs
-      
-      
+
+
     }, sanitize.text.function = function(x) x)
-    
-    
-    
+
+
+
     output$header <- renderUI({
       #print(id)
       #get average of presencas of this agente
@@ -201,7 +204,7 @@ serverSessoesObrigatorias <- function(id,
 
     })
 
-    
+
     
    
     

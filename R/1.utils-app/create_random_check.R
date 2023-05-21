@@ -5,9 +5,9 @@ create_random_check <- function(){
   
   #read all presencas (created in R_/1.Get_data_zoho/3.clean_reports.R)
   #and keep the latest record for an emprendedora marked as presente
-  presencas <- rio::import("data/1.zoho/3.clean/all_presencas.rds") %>%
+  presencas <- rio::import("data/1.zoho/2.clean_reports_zoho.rds") %>%
     dplyr::filter(Status == "Presente") %>%
-    arrange(Emprendedora, Data) %>%
+    arrange(Emprendedora, data_evento) %>%
     group_by(Emprendedora) %>%
     dplyr::filter(row_number() == n()) %>%
     ungroup() 
@@ -26,8 +26,7 @@ create_random_check <- function(){
   
   #Keep only the selected ones.
   final <- presencas %>%
-    dplyr::filter(Emprendedora %in% selected) %>%
-    rename(Turma = Grupos_fixos)
+    dplyr::filter(Emprendedora %in% selected) 
 
  
   

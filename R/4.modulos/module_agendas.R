@@ -65,7 +65,12 @@ serverAgendadas <- function(id, data_panel) {
     
     #read data --------------------------------------------------------------
     all <- data_panel %>%
-      filter(Grupo == grupo)
+      filter(Grupo == grupo,
+             #because sessoes inagurais are not scheduled
+             actividade != "Sessões individuais") %>%
+      #only keep FNM actividades
+      #this vector is created n utils-app/vectors_fnm
+      filter(actividade %in% activities_fnm)
     
     
     
@@ -103,7 +108,7 @@ serverAgendadas <- function(id, data_panel) {
       
       data_cidade() %>% dplyr::filter(Facilitadora == input$agente) %>% 
         arrange(desc(data_evento)) %>%
-        mutate(month = month(data_evento))
+        mutate(month = month(dmy(str_sub(data_evento,1,11)), label = T, abbr = F))
     })
     
     
@@ -176,7 +181,7 @@ serverAgendadas <- function(id, data_panel) {
       tags$div(class = "text-center",
         h1(input$agente),
         #h4(paste("Tipo de actividade:", input$actividade)),
-        h5(paste("Evento:",input$evento, "-", unique(data_evento()$Data)))
+        h5(paste("Evento:",input$evento, "-", unique(data_evento()$data_evento)))
       )
       
     })
@@ -185,10 +190,10 @@ serverAgendadas <- function(id, data_panel) {
       
       
       db_plot <- data_evento() %>%
-        group_by(Agente) %>%
+        group_by(Facilitadora) %>%
         summarise(Agendadas = n(),
                   Presentes = sum(Status == "Presente")) %>%
-        pivot_longer(-Agente,
+        pivot_longer(-Facilitadora,
                      names_to = "indicador",
                      values_to = "Emprendedoras")
       

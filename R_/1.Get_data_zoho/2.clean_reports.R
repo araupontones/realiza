@@ -133,7 +133,12 @@ clean_status <- clean %>%
   #artificially create sessos de coaching 1, 2 ,3, 4, etc
   create_coaching(.)
 
-View(clean_status)
+
 #export
 rio::export(clean_status, exfile)
 cli::cli_alert_success("Clean data saved in data/1.zoho")
+
+#last refreshed ---------------------------------------------------------------
+last_refreshed <-Sys.time()
+rio::export(last_refreshed, "data/1.zoho/last_refreshed.rds")
+

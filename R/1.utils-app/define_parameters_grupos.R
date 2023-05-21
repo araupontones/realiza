@@ -60,23 +60,24 @@ define_legend <- function(x){
 
   
   if(grepl("sessoes", x)){
-    
+
     legend <- tags$p(
       tags$div(class = "dot green"), "Presente",
       tags$div(class = "dot red"), "Ausente",
-      tags$div(class = "dot blue"), "Agendado",
-      tags$div(class = "dot yellow", "X"), "Agente não marcou",
-      tags$div(class = "dot empty"), "Sem Agenda"
-      
+      tags$div(class = "dot blue"), "Agendado"
+      #tags$div(class = "dot yellow", "X"), "Agente não marcou",
+      #tags$div(class = "dot empty"), "Sem Agenda"
+
     ) }
-    
+
+  #in the case of modulos, there is not agendado
  else {
     
     legend <- 
     tags$p(
       tags$div(class = "dot green"), "Presente",
-      tags$div(class = "dot red"), "Ausente",
-      tags$div(class = "dot blue"), "Agendado"
+      tags$div(class = "dot red"), "Ausente"
+      #tags$div(class = "dot blue"), "Agendado"
       
     )
   }

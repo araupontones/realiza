@@ -122,7 +122,7 @@ get_report_bulk <- function(
   }
   
   
-  cli::cli_alert_success(report_link_name)
+  cli::cli_alert_success(glue::glue('{report_link_name}************************************'))
   
   ##unnest variables in list format
   reporte_clean <- reporte %>%

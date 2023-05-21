@@ -115,7 +115,7 @@ serverAdmin <- function(id) {
       
       source("R_/X.Run_flow.R", encoding = "UTF-8")
       
-      tibble(Files = list.files("data/2.Dashboard"))
+      tibble(Files = list.files("data/1.zoho"))
       
       
     })
