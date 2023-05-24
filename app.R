@@ -70,10 +70,9 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
 #read presencas
-  presencas <- rio::import("data/1.zoho/2.clean_reports_zoho.rds")
-#read divs 
-  #divs <- rio::import('data/2.Dashboard/divs.rds')
-  
+  #paths are defined in R/0.define_paths.R
+  presencas <- rio::import(path_clean_presencas)
+  last_refreshed <- rio::import(path_last_refreshed)
   
   
 #reactive data =================================================================
@@ -83,38 +82,26 @@ server <- function(input, output, session) {
   
   active_grupo <- reactive({identify_grupo(input$Paneles)})
   
-  # data_grupo <- reactive({
-  #   
-  #   #print(identify_grupo(input$Paneles))
-  #   
-  #   presencas %>%
-  #     filter(Grupo == active_grupo())
-  #   
-  # })
-  # 
   
-#created in R_/3/
-#get the id of all the botones
+#Activate bottons in table, this makes that all the circles can be clicked =====
 #This ID is created in R_/clean_repors.R
   botones <- c(presencas$rec_id)
 
   
 
-  
-  
   lapply(botones, function(id){
   
-  
+  #filter this event from the presencas data
     data_boton <- reactive(
       
       filter(presencas, rec_id == id)
     )
     
     
-      
+    #when the bolinha is clicked, provide this information
     observeEvent(input[[id]], {
       showModal(modalDialog(
-        title = HTML(glue("<b>{data_boton()$Emprendedora}</b> -Informacao do evento")),
+        title = HTML(glue("{data_boton()$actividade}: <b>{data_boton()$Emprendedora}</b>")),
         HTML(glue(
           '<b>Evento:</b> {data_boton()$Nome_do_evento} <br>
           <b>Facilitadora/Agente:</b> {data_boton()$Facilitadora}<br>
@@ -134,24 +121,26 @@ server <- function(input, output, session) {
  
   
  
-  
-last_refreshed <- rio::import("data/1.zoho/last_refreshed.rds")
 
-output$last_refreshed <- renderUI({
+#Text of last refresehed =======================================================
   
-  text <- paste("Última atualização:", last_refreshed)
-  
-  p(text)
-})
+  output$last_refreshed <- renderUI({
+    
+    text <- paste("Última atualização:", last_refreshed)
+    
+    p(text)
+  })
 
 
 #New server grupos ============================================================
 
 grupos <- c("movimenta", "cresca", "conecta")
+  
 sessoes <- paste(c("sessoes"), grupos , sep = "_")
 modulos <- paste(c("modulos"), grupos , sep = "_")
+agendadas <- paste(c("agendadas"), grupos , sep = "_")
 
-sessoes_modulos <- c(sessoes,modulos)
+sessoes_modulos <- c(sessoes,modulos, agendadas)
 
 
 lapply(sessoes_modulos, function(active){
@@ -161,8 +150,18 @@ lapply(sessoes_modulos, function(active){
     
     if(input$Paneles == active){
       message(paste("active panel:", active))
-      serverSessoesObrigatorias(active, presencas)
-      #serverAgendadas(active, presencas)
+      
+      if(active %in% c(sessoes, modulos)){
+        serverSessoesObrigatorias(active, presencas)
+        #serverAgendadas(active, presencas)
+        
+      } else if(active %in% agendadas) {
+        serverAgendadas(active, presencas)
+        
+      }
+      
+      
+     
       
     }
     
@@ -172,38 +171,10 @@ lapply(sessoes_modulos, function(active){
 })
 
 
-agendadas <- paste(c("agendadas"), grupos , sep = "_")
-lapply(agendadas, function(active){
-  
-  
-  observe({
-    
-    if(input$Paneles == active){
-      message(paste("active panel:", active))
-      #serverSessoesObrigatorias(active, presencas)
-      serverAgendadas(active, presencas)
-      
-    }
-    
-    
-  })
-  
-})
 
 
-#Server grupos  ================================================================
 
-
-#server summary ================================================================
-#serverOverview("overview") 
-#serverSummary("summary")
-  
-  # observe({
-  # 
-  #   print(input$Paneles)
-  # })
-
-  #Password admin ===============================================================
+#Password admin ===============================================================
 #"Feedback", "sessoes_fnm", "modulos_sgr", "sessoes_sgr_fnm"
 paneles <- c("Admin")
 

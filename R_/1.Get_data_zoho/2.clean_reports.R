@@ -20,12 +20,13 @@ cli::cli_alert_info("Cleaning reports------------------------------------------"
 #' ausente: TRUE/FALSE
 
 
-exfile <- "data/1.zoho/2.clean_reports_zoho.rds"
+source('R/0.define_paths.R', encoding = 'UTF-8') #define paths
+
 
 #Import all raw reports=========================================================
 #These reports are created in R_/1.Download reports
 # all the reports are saved into a single list object
-raw_data <- import("data/1.zoho/1.raw_reports_zoho.rds") 
+raw_data <- import(path_raw_data) 
 
 
 #clean the names of the variables of all the reports
@@ -110,6 +111,12 @@ clean <- appended %>%
                             glue("Coaching - {Emprendedora} - {data_evento}"),
                             Nome_do_evento),
     
+    #and for modulos
+    Nome_do_evento = ifelse(!is.na(Modulo) & is.na(Nome_do_evento),
+                            glue("Modulo - {Modulo} - {Emprendedora}"),
+                            Nome_do_evento
+                            ),
+    
     #record ID, later used in the bottons of the table
     rec_id = glue('R{row_number()}')
     
@@ -131,14 +138,17 @@ clean_status <- clean %>%
          Grupo = str_trim(str_remove(Grupo, "Realiza & "))
          ) %>%
   #artificially create sessos de coaching 1, 2 ,3, 4, etc
-  create_coaching(.)
+  create_coaching(.) %>%
+  relocate(from_report, Cidade, Emprendedora, data_evento) %>%
+  arrange(Cidade, Grupo, Emprendedora, data_evento)
+
 
 
 #export
-rio::export(clean_status, exfile)
-cli::cli_alert_success("Clean data saved in data/1.zoho")
+rio::export(clean_status, path_clean_presencas)
+cli::cli_alert_success(glue::glue("Clean data saved in {path_clean_presencas}"))
 
 #last refreshed ---------------------------------------------------------------
 last_refreshed <-Sys.time()
-rio::export(last_refreshed, "data/1.zoho/last_refreshed.rds")
+rio::export(last_refreshed, path_last_refreshed)
 

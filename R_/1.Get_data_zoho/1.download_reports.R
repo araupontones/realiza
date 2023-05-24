@@ -3,11 +3,9 @@
 #load dependencies -------------------------------------------------------------
 library(rio)
 gmdacr::load_functions("functions")
+source('R/0.define_paths.R', encoding = 'UTF-8') #define paths
 
 
-#define parameters -------------------------------------------------------------
-
-exfile <- "data/1.zoho/1.raw_reports_zoho.rds"
 
 
 #Define reports to download ----------------------------------------------------
@@ -37,6 +35,6 @@ names(reportes) <- names(fetch_this)
 
 #Export ========================================================================
 # export list of reportes
-rio::export(reportes, exfile)
+rio::export(reportes, path_raw_data)
 
 

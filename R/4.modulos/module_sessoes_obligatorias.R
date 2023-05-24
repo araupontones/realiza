@@ -61,15 +61,18 @@ serverSessoesObrigatorias <- function(id,
     
     #message(id)
     actividades_panel <- identify_actividades(id)
-    
+    recode_actividades <- identify_recode(id)
     
     
 #Update data for this panel based on user inputs ===============================
     data_panel <- reactive({
       
-      dt <- data_presencas 
-      #%>%
-       # filter(actividade %in% actividades_panel)
+      dt <- data_presencas %>%
+       filter(actividade %in% actividades_panel) %>%
+        mutate(actividade = factor(actividade,
+                                   levels = actividades_panel,
+                                   ordered = T),
+               actividade = recode_actividades(actividade))
       
       #for the modulos, the selector is the Turma
       if(mode == "modulos"){
