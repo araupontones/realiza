@@ -1,6 +1,6 @@
 #dependencies
-source("functions/download_all_reports.R")
-source("R_/0.LookUps/utils.R")
+gmdacr::load_functions('functions')
+
 library(rio)
 
 exdir <- "data/0look_ups"
@@ -31,8 +31,8 @@ emprendedoras <- emprendedoras_zoho %>%
   #Clean agente and grupos_fixos
   mutate(across(c(Agente, Grupos_fixos), function(x)clean_zoho_lisr(x))
          ) %>%
-  left_join(select(grupos_zoho, Grupo = grupo, grupo_accronym), by = "Grupo")
-
+  left_join(select(grupos_zoho, Grupo = grupo, grupo_accronym), by = "Grupo") %>%
+  mutate(Grupo = remove_grupo_prefix(Grupo))
 
 
 
@@ -49,6 +49,8 @@ agentes <- fac_zoho %>%
   select(ID_agente = ID,
          Agente = Facilitadora,
          Cidade)
+
+
 
 
 rio::export(agentes, file.path(exdir, "agentes.rds"))
@@ -86,7 +88,7 @@ grupos <- grupos_zoho %>%
          ID_Grupo = ID)
 
 
-names(grupos_zoho)
+
 rio::export(grupos, file.path(exdir, "grupos.rds"))
 
 

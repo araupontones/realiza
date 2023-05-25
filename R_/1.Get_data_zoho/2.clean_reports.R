@@ -21,13 +21,13 @@ cli::cli_alert_info("Cleaning reports------------------------------------------"
 
 
 source('R/0.define_paths.R', encoding = 'UTF-8') #define paths
-
+gmdacr::load_functions('functions')
 
 #Import all raw reports=========================================================
 #These reports are created in R_/1.Download reports
 # all the reports are saved into a single list object
 raw_data <- import(path_raw_data) 
-
+emprendedoras <- import('data/0look_ups/emprendedoras.rds')
 
 #clean the names of the variables of all the reports
 #For each report in the list
@@ -75,7 +75,7 @@ clean_names <- lapply(seq_along(raw_data), function(i){
 appended <- do.call(plyr::rbind.fill, clean_names) %>%
   #all the IDs from other tables are redundant
   #Presencas fixas is the ID of the activity and it is not needed
-  select(-starts_with("ID_"), -Presencas_fixas, -Actividades, -status_realiza) %>%
+  select(-starts_with("ID_"), -Presencas_fixas, -Actividades, -status_realiza, - Grupo) %>%
   #doing this for checking only
   relocate(sort(names(.))) %>%
   #putting the name of the report at the begining to simplify inspection
@@ -128,27 +128,36 @@ clean <- appended %>%
 
 #clean status of Emprendedora ==================================================
 
+
+
 clean_status <- clean %>%
   mutate(Status = ifelse(Status == "", "Pendiente", Status),
          agendada = T,
          presente = Status == "Presente",
-         ausente = Status == "Ausente",
-         
-         #drop Realiza & from grupo
-         Grupo = str_trim(str_remove(Grupo, "Realiza & "))
+         ausente = Status == "Ausente"
          ) %>%
   #artificially create sessos de coaching 1, 2 ,3, 4, etc
   create_coaching(.) %>%
   relocate(from_report, Cidade, Emprendedora, data_evento) %>%
-  arrange(Cidade, Grupo, Emprendedora, data_evento)
+  arrange(Cidade, Emprendedora, data_evento)
 
 
+
+#Clean information from emprendedora ==========================================
+clean_emprendedoras <- clean_status %>%
+  #get the correct grupo and IDs of Emprendedoras
+  left_join(emprendedoras %>%select(Emprendedora, Grupo, ID_BM, grupo_accronym),
+            by = "Emprendedora") 
+  
+ 
 
 #export
-rio::export(clean_status, path_clean_presencas)
+rio::export(clean_emprendedoras, path_clean_presencas)
 cli::cli_alert_success(glue::glue("Clean data saved in {path_clean_presencas}"))
 
 #last refreshed ---------------------------------------------------------------
 last_refreshed <-Sys.time()
 rio::export(last_refreshed, path_last_refreshed)
 
+#remove environment to clean space
+rm(list = ls())
