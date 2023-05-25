@@ -6,12 +6,18 @@
 
 #create a function to create HTML element of the boton =========================
 div_boton <- function(id, class=c('red', 'green', 'blue')){
-  
+
   glue('<button id="{id}" type="button" class="btn btn-default action-button shiny-bound-input dot {class}"></button>')
-  
+
 }
 
+# div_boton <- function(id, class){
+#   
+#   glue('<button id="{id}" type="button" class="action-button shiny-bound-input dot {class}"></button>')
+#   
+# }
 
+##<div class="dot green"></div>
 #Create data with divs ==========================================================
   
 crear_data_botones <- function(.data){
