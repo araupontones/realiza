@@ -20,7 +20,7 @@ read_all <- lapply(all_modules, function(module){
     #read script
     for(script in module_scripts) {
       
-      cli::cli_alert_success(str_extract(script, '([^\\/]+$)'))
+      cli::cli_alert_success(stringr::str_extract(script, '([^\\/]+$)'))
       
       source(script, encoding = "UTF-8")
       
