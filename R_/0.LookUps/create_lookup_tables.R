@@ -3,6 +3,7 @@ gmdacr::load_functions('functions')
 source( "R_/0.lookUps/utils.R")
 
 library(rio)
+library(stringr)
 
 exdir <- "data/0look_ups"
 create_dir_(exdir)

@@ -48,7 +48,7 @@ clean_names <- lapply(seq_along(raw_data), function(i){
   #this is redundant for us
   #so lets remove them
   has_dots <- which(str_detect(names(report), "\\.")) #identify those variables
-  names(report)[has_dots] <- str_extract(names(report)[has_dots],'(?<=\\.).*') # remove the prefix
+  names(report)[has_dots] <- stringr::str_extract(names(report)[has_dots],'(?<=\\.).*') # remove the prefix
   
   #make names consistent accross forms
   n <- names(report)

@@ -2,6 +2,7 @@
 
 #load dependencies -------------------------------------------------------------
 library(rio)
+library(stringr)
 gmdacr::load_functions("functions")
 source('R/0.define_paths.R', encoding = 'UTF-8') #define paths
 

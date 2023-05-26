@@ -1,3 +1,4 @@
+library(stringr)
 #'Utils lookup
 #'
 
@@ -5,8 +6,8 @@
 
 clean_zoho_lisr <- function(x){
   
-  ifelse(str_detect(x,"list"),
-         str_extract(x, '(?<=display_value = ").*?(?=", ID)'),
+  ifelse(stringr::str_detect(x,"list"),
+         stringr::str_extract(x, '(?<=display_value = ").*?(?=", ID)'),
          x)
 }
 
