@@ -125,25 +125,25 @@ serverAgendadas <- function(id, data_panel) {
                         choices = meses_reactive())
     })
 
-    # 
-    # data_mes <- reactive({
-    #   data_agente() %>% dplyr::filter(month == input$mes)
-    # })
-    # 
-    # #actividade ----------------------------------------------------------------
-    # 
-    # 
-    # actividade_reactive <- reactive({
-    #   
-    #   unique(data_mes()$actividade)
-    # })      
-    # 
-    # observeEvent(actividade_reactive(), {
-    #   
-    #   updateSelectInput(session, "actividade",
-    #                     choices = actividade_reactive())
-    #   
-    # })
+
+    data_mes <- reactive({
+      data_agente() %>% dplyr::filter(month == input$mes)
+    })
+
+    #actividade ----------------------------------------------------------------
+
+
+    actividade_reactive <- reactive({
+
+      unique(data_mes()$actividade)
+    })
+
+    observeEvent(actividade_reactive(), {
+
+      updateSelectInput(session, "actividade",
+                        choices = actividade_reactive())
+
+    })
     # 
     # data_actividade <- reactive({
     #   
