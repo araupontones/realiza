@@ -18,10 +18,10 @@ ui_agendadas <- function(id){
                                c("Beira", "Maputo", "Nampula")
                    ),
                    
-                   selectInput(NS(id,"agente"), "Agente", choices = "Beira"),
+                   selectInput(NS(id,"agente"), "Agente", choices = "na"),
                    selectInput(NS(id,"mes"), "Mes", choices = NA),
                    selectInput(NS(id,"actividade"), "Actividade", choices = NA),
-                   selectInput(NS(id,"evento"), "Evento", choices = NA)
+                   selectInput(NS(id,"evento"), "Evento", choices = "NA")
                    
                    #Inputs Agente
                    # selectInput(NS(id,"agentes"), title_selector,
@@ -80,96 +80,97 @@ serverAgendadas <- function(id, data_panel) {
     #Reactive elements ========================================================
     
     #react to selected cidade
-    data_cidade <- reactive({
-      
-      all %>%
-        dplyr::filter(Cidade == input$cidades) 
-    })
+    # data_cidade <- reactive({
+    #   
+    #   all %>%
+    #     dplyr::filter(Cidade == input$cidades) 
+    # })
+    # 
+    # agentes_reactive <- reactive({
+    #   
+    #   sort(unique(data_cidade()$Facilitadora))
+    #   
+    # })
+    # 
+    # #agentes -------------------------------------------------------------------
+    # #update options of input agentes
+    # observeEvent(agentes_reactive(),{
+    #   
+    #   updateSelectInput(session, "agente",
+    #                     choices = agentes_reactive(),
+    #                     
+    #   )
+    #   
+    # })
+    # 
+    # 
+    # data_agente <- reactive({
+    #   
+    #   data_cidade() %>% dplyr::filter(Facilitadora == input$agente) %>% 
+    #     arrange(desc(data_evento)) %>%
+    #     mutate(month = month(dmy(str_sub(data_evento,1,11)), label = T, abbr = F))
+    # })
+    # 
+    # 
+    # #meses --------------------------------------------------------------------
+    # meses_reactive <- reactive({
+    #   
+    #   unique(data_agente()$month)
+    #   
+    # })
+    # 
+    # observeEvent(meses_reactive(),{
+    #   
+    #   updateSelectInput(session, "mes",
+    #                     choices = meses_reactive())
+    # })
+    # 
+    # 
+    # data_mes <- reactive({
+    #   data_agente() %>% dplyr::filter(month == input$mes)
+    # })
+    # 
+    # #actividade ----------------------------------------------------------------
+    # 
+    # 
+    # actividade_reactive <- reactive({
+    #   
+    #   unique(data_mes()$actividade)
+    # })      
+    # 
+    # observeEvent(actividade_reactive(), {
+    #   
+    #   updateSelectInput(session, "actividade",
+    #                     choices = actividade_reactive())
+    #   
+    # })
+    # 
+    # data_actividade <- reactive({
+    #   
+    #   data_mes() %>% dplyr::filter(actividade == input$actividade)
+    #   
+    # })
+    # 
+    # #evento ------------------------------------------------------------------
+    # evento_reactive <- reactive({
+    #   
+    #   req(data_actividade, cancelOutput = T)
+    #   sort(unique(data_actividade()$Nome_do_evento))
+    #   
+    # })
+    # 
+    # 
+    # observeEvent(evento_reactive(), {
+    #   
+    #   updateSelectInput(session, "evento",
+    #                     choices = evento_reactive())
+    # })
+    # 
     
-    agentes_reactive <- reactive({
-      
-      sort(unique(data_cidade()$Facilitadora))
-      
-    })
-    
-    #agentes -------------------------------------------------------------------
-    #update options of input agentes
-    observeEvent(agentes_reactive(),{
-      
-      updateSelectInput(session, "agente",
-                        choices = agentes_reactive(),
-                        
-      )
-      
-    })
-    
-    
-    data_agente <- reactive({
-      
-      data_cidade() %>% dplyr::filter(Facilitadora == input$agente) %>% 
-        arrange(desc(data_evento)) %>%
-        mutate(month = month(dmy(str_sub(data_evento,1,11)), label = T, abbr = F))
-    })
-    
-    
-    #meses --------------------------------------------------------------------
-    meses_reactive <- reactive({
-      
-      unique(data_agente()$month)
-      
-    })
-    
-    observeEvent(meses_reactive(),{
-      
-      updateSelectInput(session, "mes",
-                        choices = meses_reactive())
-    })
-    
-    
-    data_mes <- reactive({
-      data_agente() %>% dplyr::filter(month == input$mes)
-    })
-    
-    #actividade ----------------------------------------------------------------
-    
-    
-    actividade_reactive <- reactive({
-      
-      unique(data_mes()$actividade)
-    })      
-    
-    observeEvent(actividade_reactive(), {
-      
-      updateSelectInput(session, "actividade",
-                        choices = actividade_reactive())
-      
-    })
-    
-    data_actividade <- reactive({
-      
-      data_mes() %>% dplyr::filter(actividade == input$actividade)
-      
-    })
-    
-    #evento ------------------------------------------------------------------
-    evento_reactive <- reactive({
-      
-      sort(unique(data_actividade()$Nome_do_evento))
-      
-    })
-    
-    
-    observeEvent(evento_reactive(), {
-      
-      updateSelectInput(session, "evento",
-                        choices = evento_reactive())
-    })
-    
-    
-    data_evento <- reactive({
-      
-      data_actividade() %>% dplyr::filter(Nome_do_evento == input$evento)
-    })
+    # data_evento <- reactive({
+    #   
+    #   data_actividade() %>% dplyr::filter(Nome_do_evento == input$evento)
+    # })
     
     
     
