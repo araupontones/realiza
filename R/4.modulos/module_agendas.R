@@ -21,7 +21,7 @@ ui_agendadas <- function(id){
                    selectInput(NS(id,"agente"), "Agente", choices = "na"),
                    selectInput(NS(id,"mes"), "Mes", choices = NA),
                    selectInput(NS(id,"actividade"), "Actividade", choices = NA),
-                   selectInput(NS(id,"evento"), "Evento", choices = "NA")
+                   selectInput(NS(id,"evento"), "Evento", choices = "BAU - Legalizaçao PMEs")
                    
                    #Inputs Agente
                    # selectInput(NS(id,"agentes"), title_selector,
