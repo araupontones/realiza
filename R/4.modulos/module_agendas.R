@@ -226,21 +226,21 @@ serverAgendadas <- function(id, data_panel) {
     
     
    
-    output$table <- DT::renderDT({
-      
-      
-      DT::datatable(
-        data_evento() %>%
-          select(Emprendedora, Status),
-        escape = F,
-        rownames = F,
-        options = list(pageLength = nrow(data_evento()),
-                       dom = 't',
-                       ordering = F,
-                       selector = "td:not(.not-selectable)")
-      )
-      
-    })
+    # output$table <- DT::renderDT({
+    #   
+    #   
+    #   DT::datatable(
+    #     data_evento() %>%
+    #       select(Emprendedora, Status),
+    #     escape = F,
+    #     rownames = F,
+    #     options = list(pageLength = nrow(data_evento()),
+    #                    dom = 't',
+    #                    ordering = F,
+    #                    selector = "td:not(.not-selectable)")
+    #   )
+    #   
+    # })
     
   })
 }
