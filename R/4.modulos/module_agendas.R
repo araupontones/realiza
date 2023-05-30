@@ -80,28 +80,28 @@ serverAgendadas <- function(id, data_panel) {
     #Reactive elements ========================================================
     
     #react to selected cidade
-    # data_cidade <- reactive({
-    #   
-    #   all %>%
-    #     dplyr::filter(Cidade == input$cidades) 
-    # })
-    # 
-    # agentes_reactive <- reactive({
-    #   
-    #   sort(unique(data_cidade()$Facilitadora))
-    #   
-    # })
-    # 
+    data_cidade <- reactive({
+
+      all %>%
+        dplyr::filter(Cidade == input$cidades)
+    })
+
+    agentes_reactive <- reactive({
+
+      sort(unique(data_cidade()$Facilitadora))
+
+    })
+
     # #agentes -------------------------------------------------------------------
-    # #update options of input agentes
-    # observeEvent(agentes_reactive(),{
-    #   
-    #   updateSelectInput(session, "agente",
-    #                     choices = agentes_reactive(),
-    #                     
-    #   )
-    #   
-    # })
+    #update options of input agentes
+    observeEvent(agentes_reactive(),{
+
+      updateSelectInput(session, "agente",
+                        choices = agentes_reactive(),
+
+      )
+
+    })
     # 
     # 
     # data_agente <- reactive({
