@@ -160,4 +160,5 @@ last_refreshed <-Sys.time()
 rio::export(last_refreshed, path_last_refreshed)
 
 #remove environment to clean space
-rm(list = ls())
+#rm(list = ls())
+

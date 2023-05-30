@@ -71,6 +71,16 @@ ui <- fluidPage(
 server <- function(input, output, session) {
 #read presencas
   #paths are defined in R/0.define_paths.R
+  
+  if(!file.exists("data/2.clean_presencas.rds")){
+
+    message('creating data')
+    source('R_/X.Run_flow.R')
+    #source('R/Run-ALL-folders.R')
+  }
+
+  
+  
   presencas <- rio::import(path_clean_presencas)
   last_refreshed <- rio::import(path_last_refreshed)
   
