@@ -18,7 +18,7 @@ ui_agendadas <- function(id){
                                c("Beira", "Maputo", "Nampula")
                    ),
                    
-                   selectInput(NS(id,"agente"), "Agente", choices = NA),
+                   selectInput(NS(id,"agente"), "Agente", choices = "Beira"),
                    selectInput(NS(id,"mes"), "Mes", choices = NA),
                    selectInput(NS(id,"actividade"), "Actividade", choices = NA),
                    selectInput(NS(id,"evento"), "Evento", choices = NA)
@@ -176,7 +176,7 @@ serverAgendadas <- function(id, data_panel) {
     #Header ===================================================================
     
     output$header <- renderUI({
-      
+      shiny::req(data_evento, cancelOutput = T)
       
       tags$div(class = "text-center",
         h1(input$agente),
@@ -188,6 +188,7 @@ serverAgendadas <- function(id, data_panel) {
     
     output$plot <- renderPlotly({
       
+      shiny::req(data_evento, cancelOutput = T)
       
       db_plot <- data_evento() %>%
         group_by(Facilitadora) %>%
@@ -226,21 +227,21 @@ serverAgendadas <- function(id, data_panel) {
     
     
    
-    # output$table <- DT::renderDT({
-    #   
-    #   
-    #   DT::datatable(
-    #     data_evento() %>%
-    #       select(Emprendedora, Status),
-    #     escape = F,
-    #     rownames = F,
-    #     options = list(pageLength = nrow(data_evento()),
-    #                    dom = 't',
-    #                    ordering = F,
-    #                    selector = "td:not(.not-selectable)")
-    #   )
-    #   
-    # })
+    output$table <- DT::renderDT({
+      shiny::req(data_evento, cancelOutput = T)
+
+      DT::datatable(
+        data_evento() %>%
+          select(Emprendedora, Status),
+        escape = F,
+        rownames = F,
+        options = list(pageLength = nrow(data_evento()),
+                       dom = 't',
+                       ordering = F,
+                       selector = "td:not(.not-selectable)")
+      )
+
+    })
     
   })
 }
