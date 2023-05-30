@@ -39,7 +39,7 @@ ui_agendadas <- function(id){
                   
                   column(4,
                          #table with presences
-                         withSpinner(DT::DTOutput(NS(id,"table")), color = "black")
+                         withSpinner(tableOutput(NS(id,"table")), color = "black")
                   )
                 )
                 
@@ -144,105 +144,101 @@ serverAgendadas <- function(id, data_panel) {
                         choices = actividade_reactive())
 
     })
-    # 
-    # data_actividade <- reactive({
-    #   
-    #   data_mes() %>% dplyr::filter(actividade == input$actividade)
-    #   
-    # })
-    # 
+    #
+    data_actividade <- reactive({
+
+      data_mes() %>% dplyr::filter(actividade == input$actividade)
+
+    })
+    #
     # #evento ------------------------------------------------------------------
-    # evento_reactive <- reactive({
-    #   
-    #   req(data_actividade, cancelOutput = T)
-    #   sort(unique(data_actividade()$Nome_do_evento))
-    #   
-    # })
-    # 
-    # 
-    # observeEvent(evento_reactive(), {
-    #   
-    #   updateSelectInput(session, "evento",
-    #                     choices = evento_reactive())
-    # })
-    # 
-    
-    # data_evento <- reactive({
-    #   
-    #   data_actividade() %>% dplyr::filter(Nome_do_evento == input$evento)
-    # })
-    
-    
-    
+    evento_reactive <- reactive({
+
+      req(data_actividade, cancelOutput = T)
+      sort(unique(data_actividade()$Nome_do_evento))
+
+    })
+    #
+    #
+    observeEvent(evento_reactive(), {
+
+      updateSelectInput(session, "evento",
+                        choices = evento_reactive())
+    })
+    #
+
+    data_evento <- reactive({
+
+      data_actividade() %>% dplyr::filter(Nome_do_evento == input$evento)
+    })
+
+
+
     #Header ===================================================================
+
+    output$header <- renderUI({
+      shiny::req(data_evento, cancelOutput = T)
+
+      tags$div(class = "text-center",
+        h1(input$agente),
+        #h4(paste("Tipo de actividade:", input$actividade)),
+        h5(paste("Evento:",input$evento, "-", unique(data_evento()$data_evento)))
+      )
+
+    })
+    #
+    output$plot <- renderPlotly({
+
+      shiny::req(data_evento, cancelOutput = T)
+
+      db_plot <- data_evento() %>%
+        group_by(Facilitadora) %>%
+        summarise(Agendadas = n(),
+                  Presentes = sum(Status == "Presente")) %>%
+        pivot_longer(-Facilitadora,
+                     names_to = "indicador",
+                     values_to = "Emprendedoras")
+
+
+      plot <- ggplot(db_plot,
+                     aes(x = indicador,
+                         y = Emprendedoras,
+                         fill = indicador)
+      ) +
+        geom_col() +
+        labs(x = "",
+             y = "Emprendedoras") +
+        scale_y_continuous(labels = function(x)round(x,0)) +
+        scale_fill_manual(values = palette) +
+        theme_realiza()
+
+
+
+      ggplotly(plot,
+               tooltip = 'y') %>%
+        config(displayModeBar = F) %>%
+        layout(
+          legend = list(orientation = "h", x = 0.4, y = -0.2 )
+
+        )
+
+
+    })
+
+
+
+    #
     
-    # output$header <- renderUI({
-    #   shiny::req(data_evento, cancelOutput = T)
-    #   
-    #   tags$div(class = "text-center",
-    #     h1(input$agente),
-    #     #h4(paste("Tipo de actividade:", input$actividade)),
-    #     h5(paste("Evento:",input$evento, "-", unique(data_evento()$data_evento)))
-    #   )
-    #   
-    # })
-    # 
-    # output$plot <- renderPlotly({
-    #   
-    #   shiny::req(data_evento, cancelOutput = T)
-    #   
-    #   db_plot <- data_evento() %>%
-    #     group_by(Facilitadora) %>%
-    #     summarise(Agendadas = n(),
-    #               Presentes = sum(Status == "Presente")) %>%
-    #     pivot_longer(-Facilitadora,
-    #                  names_to = "indicador",
-    #                  values_to = "Emprendedoras")
-    #   
-    #   
-    #   plot <- ggplot(db_plot,
-    #                  aes(x = indicador,
-    #                      y = Emprendedoras,
-    #                      fill = indicador)
-    #   ) +
-    #     geom_col() +
-    #     labs(x = "",
-    #          y = "Emprendedoras") +
-    #     scale_y_continuous(labels = function(x)round(x,0)) +
-    #     scale_fill_manual(values = palette) +
-    #     theme_realiza()
-    #   
-    #   
-    #   
-    #   ggplotly(plot,
-    #            tooltip = 'y') %>%
-    #     config(displayModeBar = F) %>%
-    #     layout(
-    #       legend = list(orientation = "h", x = 0.4, y = -0.2 )
-    #       
-    #     )
-    #   
-    #   
-    # })
     
     
-    
-    # 
-    # output$table <- DT::renderDT({
-    #   shiny::req(data_evento, cancelOutput = T)
-    # 
-    #   DT::datatable(
-    #     data_evento() %>%
-    #       select(Emprendedora, Status),
-    #     escape = F,
-    #     rownames = F,
-    #     options = list(pageLength = nrow(data_evento()),
-    #                    dom = 't',
-    #                    ordering = F,
-    #                    selector = "td:not(.not-selectable)")
-    #   )
-    # 
-    # })
+    output$table <- renderTable({
+      shiny::req(data_evento, cancelOutput = T)
+
+     
+        data_evento() %>%
+          select(Emprendedora, Status)
+
+    })
     
   })
 }
