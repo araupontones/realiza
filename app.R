@@ -79,41 +79,44 @@ server <- function(input, output, session) {
   active_grupo <- reactive({identify_grupo(input$Paneles)})
   
   
+  
 #Activate bottons in table, this makes that all the circles can be clicked =====
-#This ID is created in R_/clean_repors.R
-  botones <- c(presencas$rec_id)
+# #This ID is created in R_/clean_repors.R
+    #botones <- c(presencas$rec_id)
+  
+ 
+ 
+ # botones <- c(presencas$rec_id)
+ # 
+ # lapply(botones, function(id){
+ # 
+ # #filter this event from the presencas data
+ #   data_boton <- reactive(
+ # 
+ #     filter(presencas, rec_id == id)
+ #   )
+ # 
+ # 
+ #   #when the bolinha is clicked, provide this information
+ #   observeEvent(input[[id]], {
+ #     showModal(modalDialog(
+ #       title = HTML(glue("{data_boton()$actividade}: <b>{data_boton()$Emprendedora}</b>")),
+ #       HTML(glue(
+ #         '<b>Evento:</b> {data_boton()$Nome_do_evento} <br>
+ #         <b>Facilitadora/Agente:</b> {data_boton()$Facilitadora}<br>
+ #         <b>Data do evento:</b> {data_boton()$data_evento} <br>
+ #         <b>Status:</b> {data_boton()$Status}
+ #         '
+ #       )),
+ #       easyClose = TRUE,
+ #       footer = NULL
+ #     ))
+ #   })
+ # 
+ # 
+ # 
+ # })
 
-  
-
-  lapply(botones, function(id){
-  
-  #filter this event from the presencas data
-    data_boton <- reactive(
-      
-      filter(presencas, rec_id == id)
-    )
-    
-    
-    #when the bolinha is clicked, provide this information
-    observeEvent(input[[id]], {
-      showModal(modalDialog(
-        title = HTML(glue("{data_boton()$actividade}: <b>{data_boton()$Emprendedora}</b>")),
-        HTML(glue(
-          '<b>Evento:</b> {data_boton()$Nome_do_evento} <br>
-          <b>Facilitadora/Agente:</b> {data_boton()$Facilitadora}<br>
-          <b>Data do evento:</b> {data_boton()$data_evento} <br>
-          <b>Status:</b> {data_boton()$Status}
-          '
-        )),
-        easyClose = TRUE,
-        footer = NULL
-      ))
-    })
-    
-    
-    
-  })
-  
  
   
  
@@ -138,19 +141,59 @@ agendadas <- paste(c("agendadas"), grupos , sep = "_")
 
 sessoes_modulos <- c(sessoes,modulos, agendadas)
 
-
+#run servers 
 lapply(sessoes_modulos, function(active){
   
  
   observe({
     
+    #tell me where we are
     if(input$Paneles == active){
       message(paste("active panel:", active))
       
       if(active %in% c(sessoes, modulos)){
-        serverSessoesObrigatorias(active, presencas)
-        #serverAgendadas(active, presencas)
+        #run server sessoes and return data for the selected agente
+        data_agente <- serverSessoesObrigatorias(active, presencas)
         
+        #create the events to get the modals of each boton
+        observeEvent(data_agente(),{
+          
+          
+          #get id of each boton
+          botones <- c(data_agente()$rec_id)
+
+          lapply(botones, function(id){
+
+          #filter this event from the presencas data
+            data_boton <- reactive(
+
+              filter(presencas, rec_id == id)
+            )
+
+            #when the bolinha is clicked, provide this information
+            observeEvent(input[[id]], {
+              showModal(modalDialog(
+                title = HTML(glue("{data_boton()$actividade}: <b>{data_boton()$Emprendedora}</b>")),
+                HTML(glue(
+                  '<b>Evento:</b> {data_boton()$Nome_do_evento} <br>
+                  <b>Facilitadora/Agente:</b> {data_boton()$Facilitadora}<br>
+                  <b>Data do evento:</b> {data_boton()$data_evento} <br>
+                  <b>Status:</b> {data_boton()$Status}
+                  '
+                )),
+                easyClose = TRUE,
+                footer = NULL
+              )) #show modal
+            }) #observe event input$id
+
+
+
+          }) #lapply botones
+          
+          
+        }) #Observe event data agente
+        
+        #serverAgendadas(active, presencas)
       } else if(active %in% agendadas) {
         serverAgendadas(active, presencas)
         

@@ -48,6 +48,7 @@ serverSessoesObrigatorias <- function(id,
   moduleServer(id, function(input, output, session) {
     
 
+    
     #Sessoes obligatorias del grupo
     sessoes_obligatorias = 9
     #to fetch which grupo this is about
@@ -172,9 +173,20 @@ serverSessoesObrigatorias <- function(id,
         )
 
 
+    
+    
+
+    
 
 # # Transform data to botones ===================================================
 
+    
+    
+    
+    
+    
+    
+    
     output$table <- renderTable({
       data_agente() %>%
         crear_data_botones(.)
@@ -208,8 +220,10 @@ serverSessoesObrigatorias <- function(id,
     })
 
 
-    
+  return(reactive(data_agente()))
    
     
   })
+  
+  
 }
