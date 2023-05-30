@@ -102,29 +102,29 @@ serverAgendadas <- function(id, data_panel) {
       )
 
     })
-    # 
-    # 
-    # data_agente <- reactive({
-    #   
-    #   data_cidade() %>% dplyr::filter(Facilitadora == input$agente) %>% 
-    #     arrange(desc(data_evento)) %>%
-    #     mutate(month = month(dmy(str_sub(data_evento,1,11)), label = T, abbr = F))
-    # })
-    # 
-    # 
-    # #meses --------------------------------------------------------------------
-    # meses_reactive <- reactive({
-    #   
-    #   unique(data_agente()$month)
-    #   
-    # })
-    # 
-    # observeEvent(meses_reactive(),{
-    #   
-    #   updateSelectInput(session, "mes",
-    #                     choices = meses_reactive())
-    # })
-    # 
+
+
+    data_agente <- reactive({
+
+      data_cidade() %>% dplyr::filter(Facilitadora == input$agente) %>%
+        arrange(desc(data_evento)) %>%
+        mutate(month = month(dmy(str_sub(data_evento,1,11)), label = T, abbr = F))
+    })
+
+
+    #meses --------------------------------------------------------------------
+    meses_reactive <- reactive({
+
+      unique(data_agente()$month)
+
+    })
+
+    observeEvent(meses_reactive(),{
+
+      updateSelectInput(session, "mes",
+                        choices = meses_reactive())
+    })
+
     # 
     # data_mes <- reactive({
     #   data_agente() %>% dplyr::filter(month == input$mes)

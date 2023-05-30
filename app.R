@@ -30,14 +30,6 @@ ui <- fluidPage(
   navbarPage("Realiza",
              id = "Paneles",
              
-             # 
-             # navbarMenu("test",
-             #            tabPanel("Test",
-             #                     value = "test_cresca",
-             #                     tableOutput("table")
-             #                     
-             #            )
-             #            ),
              
              #the value of the selected panel is defined within panels_cresca()
              #panels_cresca_conecta(title = "Cresça"),
@@ -45,13 +37,7 @@ ui <- fluidPage(
              panels_UI(title = "Conecta" , value = "sessoes_conecta"),
              panels_UI(title = "Movimienta" , value = "sessoes_movimenta"),
              
-            # panels_FNM("FNM"),
-            #  
-            # panels_SGR("SGR"),
-            #  
-            # panels_SGR_FNM("FNM + SGR"),
-            #  
-            # panel_powerBI("Feedback"),
+           
             
             tabPanel("Admin",
                      ui_admin("admin")),
