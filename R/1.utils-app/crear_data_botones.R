@@ -44,6 +44,7 @@ crear_data_botones <- function(.data){
   
   boton = paste(boton, boton_parceiro)
   ) %>%
+    arrange(date) %>%
   #Create a single row by emprendodora, and a column for each type of activity
   group_by(Emprendedora, actividade) %>%
   summarise(divs = paste(boton, collapse = ""),
