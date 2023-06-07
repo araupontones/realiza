@@ -80,45 +80,6 @@ server <- function(input, output, session) {
   
   
   
-#Activate bottons in table, this makes that all the circles can be clicked =====
-# #This ID is created in R_/clean_repors.R
-    #botones <- c(presencas$rec_id)
-  
- 
- 
- # botones <- c(presencas$rec_id)
- # 
- # lapply(botones, function(id){
- # 
- # #filter this event from the presencas data
- #   data_boton <- reactive(
- # 
- #     filter(presencas, rec_id == id)
- #   )
- # 
- # 
- #   #when the bolinha is clicked, provide this information
- #   observeEvent(input[[id]], {
- #     showModal(modalDialog(
- #       title = HTML(glue("{data_boton()$actividade}: <b>{data_boton()$Emprendedora}</b>")),
- #       HTML(glue(
- #         '<b>Evento:</b> {data_boton()$Nome_do_evento} <br>
- #         <b>Facilitadora/Agente:</b> {data_boton()$Facilitadora}<br>
- #         <b>Data do evento:</b> {data_boton()$data_evento} <br>
- #         <b>Status:</b> {data_boton()$Status}
- #         '
- #       )),
- #       easyClose = TRUE,
- #       footer = NULL
- #     ))
- #   })
- # 
- # 
- # 
- # })
-
- 
-  
  
 
 #Text of last refresehed =======================================================

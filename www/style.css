@@ -15,11 +15,13 @@ body{
 }
 
 .dot {
+  line-height: 0;
   height: 10px !important;
   margin-right: 1px !important;
   width: 10px !important;
   border-radius: 100% !important;
   display: inline-block !important;
+  color: white;
 }
 
 .green{

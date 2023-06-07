@@ -11,6 +11,13 @@ div_boton <- function(id, class=c('red', 'green', 'blue')){
 
 }
 
+
+div_boton_parceiro <- function(id, class=c('red', 'green', 'blue')){
+  
+  glue('<button id="{id}" type="button" class="btn btn-default action-button shiny-bound-input dot {class}">p</button>')
+  
+}
+
 # div_boton <- function(id, class){
 #   
 #   glue('<button id="{id}" type="button" class="action-button shiny-bound-input dot {class}"></button>')
@@ -28,7 +35,14 @@ crear_data_botones <- function(.data){
   mutate(boton = case_when(presente ~ div_boton(rec_id, 'green'),
                            ausente ~ div_boton(rec_id, 'red'),
                            T ~ div_boton(rec_id, 'blue')
-  )
+  ),
+  
+  boton_parceiro = case_when(is.na(Parceiro) | Parceiro == "Nao Convocado" ~ glue(""),
+                             Parceiro == "Ausente" ~ div_boton_parceiro(rec_id, 'red'),
+                             Parceiro == "Presente" ~ div_boton_parceiro(rec_id, 'green')
+                             ),
+  
+  boton = paste(boton, boton_parceiro)
   ) %>%
   #Create a single row by emprendodora, and a column for each type of activity
   group_by(Emprendedora, actividade) %>%
