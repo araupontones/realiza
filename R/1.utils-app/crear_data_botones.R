@@ -39,7 +39,8 @@ crear_data_botones <- function(.data){
   
   boton_parceiro = case_when(is.na(Parceiro) | Parceiro == "Nao Convocado" ~ glue(""),
                              Parceiro == "Ausente" ~ div_boton_parceiro(rec_id, 'red'),
-                             Parceiro == "Presente" ~ div_boton_parceiro(rec_id, 'green')
+                             Parceiro == "Presente" ~ div_boton_parceiro(rec_id, 'green'),
+                             T ~ glue('')
                              ),
   
   boton = paste(boton, boton_parceiro)
