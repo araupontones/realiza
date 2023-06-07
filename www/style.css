@@ -16,6 +16,7 @@ body{
 
 .dot {
   line-height: 0;
+  padding: 12px 12px;
   height: 10px !important;
   margin-right: 1px !important;
   width: 10px !important;

@@ -118,7 +118,10 @@ clean <- appended %>%
                             ),
     
     #record ID, later used in the bottons of the table
-    rec_id = glue('R{row_number()}')
+    rec_id = glue('R{row_number()}'),
+    
+    #date
+    date = dmy(str_sub(data_evento, 1,12))
     
     
   )

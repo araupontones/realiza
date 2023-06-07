@@ -147,8 +147,14 @@ serverSessoesObrigatorias <- function(id,
 # #data stats agente ============================================================
 
 
-    stats_agente <- reactive(
+    
+    stats_agente <- reactive({
+      
+      today <- Sys.Date()
+      
       data_agente() %>%
+        #keep only activities that happened already
+        filter(date <= today) %>%
         #count presencas by emprendedoras
         group_by(Emprendedora, Facilitadora) %>%
         #count whether emprendedoras have completed sessoes obligatorias
@@ -170,7 +176,7 @@ serverSessoesObrigatorias <- function(id,
                   )
 
 
-        )
+        })
 
 
     

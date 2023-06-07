@@ -83,6 +83,8 @@ get_report_bulk <- function(
     from = 1
   )
   
+  
+  
   rows <- nrow(reporte)
   from <- nrow(reporte)
   has_more <- rows >=200
