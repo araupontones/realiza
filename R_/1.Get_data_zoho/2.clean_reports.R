@@ -29,6 +29,7 @@ gmdacr::load_functions('functions')
 raw_data <- import(path_raw_data) 
 emprendedoras <- import('data/0look_ups/emprendedoras.rds')
 
+
 #clean the names of the variables of all the reports
 #For each report in the list
 clean_names <- lapply(seq_along(raw_data), function(i){
@@ -149,7 +150,11 @@ clean_status <- clean %>%
 #Clean information from emprendedora ==========================================
 clean_emprendedoras <- clean_status %>%
   #get the correct grupo and IDs of Emprendedoras
-  left_join(emprendedoras %>%select(Emprendedora, Grupo, ID_BM, grupo_accronym),
+  left_join(emprendedoras %>% 
+              select(Emprendedora, Grupo, ID_BM, grupo_accronym) %>%
+              group_by(Emprendedora) %>%
+              slice(1) %>%
+              ungroup(),
             by = "Emprendedora") 
   
  
