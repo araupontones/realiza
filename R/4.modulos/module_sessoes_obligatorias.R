@@ -78,9 +78,12 @@ serverSessoesObrigatorias <- function(id,
       #for the modulos, the selector is the Turma
       if(mode == "modulos"){
         
+       
         dt <- dt %>%
           select(-Facilitadora) %>%
-          rename(Facilitadora = Turma)
+          rename(Facilitadora = Turma) %>%
+          #sessoes individuais dont belong to the modules
+          dplyr::filter(actividade != "Individuais" )
         
       }
       
