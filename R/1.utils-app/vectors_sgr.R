@@ -18,7 +18,9 @@ activities_sgr <- c( "Sessão Inaugural" ,
                     "Sessões de coaching 1",
                     "Sessões de coaching 2",
                     "Sessões de coaching 3",
-                    "Sessões de coaching 4"
+                    "Sessões de coaching 4",
+                    #added on august 28 2023 because Dercio asked
+                    "Sessões individuais"
                     
 )
 
@@ -34,6 +36,8 @@ recode_sgr <- function(activities_sgr){
          "Sessões de coaching 1" = "Coaching 1",
          "Sessões de coaching 2" =  "Coaching 2",
          "Sessões de coaching 3" =  "Coaching 3",
-         "Sessões de coaching 4" =  "Coaching 4")
+         "Sessões de coaching 4" =  "Coaching 4",
+         #added on august 28 2023 because Dercio asked
+         "Sessões individuais" = "Individuais")
   
 }

@@ -146,16 +146,18 @@ clean_status <- clean %>%
   arrange(Cidade, Emprendedora, data_evento)
 
 
-
 #Clean information from emprendedora ==========================================
 clean_emprendedoras <- clean_status %>%
   #get the correct grupo and IDs of Emprendedoras
   left_join(emprendedoras %>% 
-              select(Emprendedora, Grupo, ID_BM, grupo_accronym) %>%
+              select(Emprendedora, Grupo, ID_BM, grupo_accronym, Grupos_fixos) %>%
               group_by(Emprendedora) %>%
               slice(1) %>%
               ungroup(),
-            by = "Emprendedora") 
+            by = "Emprendedora") %>%
+  #fix issue of grupos missing Turma (august 28 2023 after Dercio asked to)
+  mutate(Turma = ifelse(is.na(Turma), Grupos_fixos, Turma)) %>%
+  select(-Grupos_fixos)
   
  
 
